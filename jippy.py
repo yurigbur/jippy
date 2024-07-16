@@ -5,21 +5,22 @@ import ipaddress
 import os
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description='Convert IP notifications and collect idditional informations.')
-    
+    parser = argparse.ArgumentParser(description='Convert IP notifications and collect idditional informations.', formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('mode', 
                         choices=['atomize', 'minify', 'count'],
-                        help='Mode of operation\n \
-                            atomize: Returns a list of single IPs that are contained in the input\n \
-                            minify: Calculates the smalles number of CIDR ranges containing all IPs from the input \n \
-                            count: Returns the number of unique IPs contained in the input'
-                        )
+                        help=('Mode of operation\n'
+                            '\tatomize: Returns a list of single IPs that are contained in the input\n'
+                            '\tminify: Calculates the smalles number of CIDR ranges containing all IPs from the input \n'
+                            '\tcount: Returns the number of unique IPs contained in the input\n'
+                        ))
     
     parser.add_argument('ips', 
                         nargs='+', 
-                        help='Input IPs as space separated list or an input file with newline separated entries.\n \
-                            Supported formats are standard IP notation (123.123.123.123), CIDR ranges (123.123.123.0/24) and range notation (123.123.123.0-123)'
-                        )
+                        help=('Input IPs as space separated list or an input file with newline separated entries. Supported formats are:\n'
+                            '\tStandard IP notation (123.123.123.123)\n'
+                            '\tCIDR ranges (123.123.123.0/24)\n'
+                            '\tRange notation (123.123.123.0-123)\n'
+                        ))
     
     args = parser.parse_args()
     return args    
