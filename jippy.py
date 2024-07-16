@@ -3,6 +3,7 @@
 import argparse
 import ipaddress
 import os
+import netaddr
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Convert IP notifications and collect idditional informations.', formatter_class=argparse.RawTextHelpFormatter)
@@ -76,10 +77,11 @@ def main():
 
     ips = get_input(args.ips)
     if args.mode == "atomize":
-        print(atomize_targets(ips))
+        print(*(atomize_targets(ips)), sep='\n')
     
     if args.mode == "minify":
-        print("[!] Not implemented yet")
+        cidr_list = [str(cidr) for cidr in netaddr.IPSet(atomize_targets(ips)).iter_cidrs()]
+        print(*cidr_list, sep='\n')
 
     if args.mode == "count":
         print(len(atomize_targets(ips)))
