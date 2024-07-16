@@ -1,6 +1,6 @@
 # jippy!
 
-Jippy is a small command line tools to **J**uggle **ip**s in **py**thon.
+Jippy is a small command line tool to **J**uggle **ip**s in **py**thon.
 
 ## Usage 
 
