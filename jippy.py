@@ -6,7 +6,7 @@ import os
 import netaddr
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description='Convert IP notifications and collect idditional informations.', formatter_class=argparse.RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(description='Convert IP notations and collect additional informations.', formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('mode', 
                         choices=['atomize', 'minify', 'count'],
                         help=('Mode of operation\n'
@@ -22,6 +22,8 @@ def parse_arguments():
                             '\tCIDR ranges (123.123.123.0/24)\n'
                             '\tRange notation (123.123.123.0-123)\n'
                         ))
+    
+    parser.add_argument('--output', '-o', default=None, help='Write the output to the specified file (does not work for count)')
     
     args = parser.parse_args()
     return args    
@@ -71,20 +73,34 @@ def atomize_targets(arguments):
     
     return [str(ip) for ip in sorted_ips]
 
-
 def main():
     args = parse_arguments()
 
     ips = get_input(args.ips)
+    atom_list = output_list = atomize_targets(ips)
     if args.mode == "atomize":
-        print(*(atomize_targets(ips)), sep='\n')
+        print(*atom_list, sep='\n')
     
     if args.mode == "minify":
-        cidr_list = [str(cidr) for cidr in netaddr.IPSet(atomize_targets(ips)).iter_cidrs()]
+        cidr_list = [str(cidr) for cidr in netaddr.IPSet(atom_list).iter_cidrs()]
         print(*cidr_list, sep='\n')
+        output_list = cidr_list
 
     if args.mode == "count":
-        print(len(atomize_targets(ips)))
+        cnt = len(atom_list)
+        print(cnt)
+        output_list = [cnt]
+
+    #Write output if specified
+    if args.output:
+        try:
+            with open(args.output, "w") as fd:
+                for entry in output_list:
+                    fd.write(entry + "\n")
+        except Exception as e:
+            print("[!] Something went wrong writing the output to the specified file")
+            print(str(e))
+
 
 
 if __name__ == '__main__':
