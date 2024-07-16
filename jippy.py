@@ -23,7 +23,7 @@ def parse_arguments():
                             '\tRange notation (123.123.123.0-123)\n'
                         ))
     
-    parser.add_argument('--output', '-o', default=None, help='Write the output to the specified file (does not work for count)')
+    parser.add_argument('--output', '-o', default=None, help='Write the output to the specified file.')
     
     args = parser.parse_args()
     return args    

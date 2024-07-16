@@ -24,6 +24,6 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
   --output OUTPUT, -o OUTPUT
-                        Write the output to the specified file (does not work for count)
+                        Write the output to the specified file.
 ```
 
