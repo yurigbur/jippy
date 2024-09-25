@@ -5,8 +5,8 @@ Jippy is a small command line tool to **J**uggle **ip**s in **py**thon.
 ## Usage 
 
 ```
-$ ./jippy.py -h                                                                 
-usage: jippy.py [-h] [--output OUTPUT] {atomize,minify,count} ips [ips ...]
+$ ./jippy.py -h                                                                  
+usage: jippy.py [-h] [--output OUTPUT] [--exclude EXCLUDE [EXCLUDE ...]] {atomize,minify,count} ips [ips ...]
 
 Convert IP notations and collect additional informations.
 
@@ -25,5 +25,7 @@ options:
   -h, --help            show this help message and exit
   --output OUTPUT, -o OUTPUT
                         Write the output to the specified file.
+  --exclude EXCLUDE [EXCLUDE ...], -e EXCLUDE [EXCLUDE ...]
+                        Remove the IPs from the input
 ```
 

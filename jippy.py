@@ -24,6 +24,7 @@ def parse_arguments():
                         ))
     
     parser.add_argument('--output', '-o', default=None, help='Write the output to the specified file.')
+    parser.add_argument('--exclude', '-e', nargs='+', default=None, help='Remove the IPs from the input')
     
     args = parser.parse_args()
     return args    
@@ -77,14 +78,19 @@ def main():
     args = parse_arguments()
 
     ips = get_input(args.ips)
-    atom_list = output_list = atomize_targets(ips)
+    atom_list = atomize_targets(ips)
+    if args.exclude:
+            tmp_list = [ip for ip in atom_list if ip not in atomize_targets(get_input(args.exclude))]
+            atom_list = tmp_list
+        
     if args.mode == "atomize":
-        print(*atom_list, sep='\n')
+        output_list = atom_list
+        print(*output_list, sep='\n')
     
     if args.mode == "minify":
         cidr_list = [str(cidr) for cidr in netaddr.IPSet(atom_list).iter_cidrs()]
-        print(*cidr_list, sep='\n')
         output_list = cidr_list
+        print(*output_list, sep='\n')
 
     if args.mode == "count":
         cnt = len(atom_list)
